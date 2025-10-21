@@ -18,35 +18,35 @@ CARD_ORDER = ['H2', 'C2', 'S2', 'D2', 'H3', 'C3', 'S3', 'D3', 'H4', 'C4', 'S4', 
               'H8', 'C8', 'S8', 'D8', 'H9', 'C9', 'S9', 'D9', 'HT', 'CT', 'ST', 'DT',
               'HJ', 'CJ', 'SJ', 'DJ', 'HQ', 'CQ', 'SQ', 'DQ', 'HK', 'CK', 'SK', 'DK',
               'HA', 'CA', 'SA', 'DA', 'HB', 'SR']
-RANK = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
+RANK = ['2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
 
 
 def setup_logger(key):
     """为每个客户端创建独立的日志配置"""
     logger = logging.getLogger(f'test_client_{key}')
 
-    # # 如果logger已经有处理器，说明已经配置过，直接返回
-    # if logger.handlers:
-    #     return logger
-    #
-    # logger.setLevel(logging.INFO)
-    #
-    # # 创建文件处理器，使用key作为文件名
-    # file_handler = logging.FileHandler(f'test_client_{key}.log')
-    # file_handler.setLevel(logging.INFO)
-    #
-    # # 创建控制台处理器
-    # console_handler = logging.StreamHandler(sys.stdout)
-    # console_handler.setLevel(logging.INFO)
-    #
-    # # 创建格式化器
-    # formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    # file_handler.setFormatter(formatter)
-    # console_handler.setFormatter(formatter)
-    #
-    # # 添加处理器到日志记录器
-    # logger.addHandler(file_handler)
-    # logger.addHandler(console_handler)
+    # 如果logger已经有处理器，说明已经配置过，直接返回
+    if logger.handlers:
+        return logger
+
+    logger.setLevel(logging.INFO)
+
+    # 创建文件处理器，使用key作为文件名
+    file_handler = logging.FileHandler(f'test_client_{key}.log')
+    file_handler.setLevel(logging.INFO)
+
+    # 创建控制台处理器
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(logging.INFO)
+
+    # 创建格式化器
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # 添加处理器到日志记录器
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
 
     return logger
 
@@ -91,7 +91,8 @@ class GDTestClient:
         :param key: 玩家唯一key（如a1、b1、a2、b2）
         """
         self.key = key
-        self.uri = f"ws://localhost:23456/{key}"
+        # self.uri = f"ws://localhost:23456/{key}"
+        self.uri = f"ws://gd-gs6.migufun.com:23456/{key}"
         self.cards: List[int] = []
         self.ws = None
         self.current_round = 0
@@ -279,21 +280,21 @@ async def main():
     """
     import argparse
     parser = argparse.ArgumentParser(description='掼蛋游戏测试客户端')
-    parser.add_argument('key', type=str, default="a1", help='玩家唯一key(如a1、b1、a2、b2)')
+    parser.add_argument('key', type=str, default="ex_P-DW0Z6P-ES9P8H-6EM9BN-89RP1Q-EN-BP_1", help='玩家唯一key(如a1、b1、a2、b2)')
     # args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    ckpt = torch.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/pre_model.pth", map_location=device)
+    ckpt = torch.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/dqn_latest_model_a1.pth", map_location=device)
 
     # 1) 用保存时的维度与类名还原模型
     model = QStateActionFusion().to(device)
-    model.load_state_dict(ckpt["state_dict"])
+    model.load_state_dict(ckpt)
     model.eval()
     # agent = PPOAgent(state_dim=436, action_dim=1000)  # 54张牌+1轮次
     # agent.load_weights(
     #     "/home/tao/Competition/AI_GuanDan/训练平台/GdAITest_package/GuanDan/learner/checkpoints/ppo_latest_model_a1.pth",
     #     map_location='cpu')
-    client = GDTestClient('a1', model)
+    client = GDTestClient('ex_P-DW0Z6P-ES9P8H-6EM9BN-89RP1Q-EN-BP_1', model)
     # client = GDTestClient(args.key,model)
     await client.run()
 

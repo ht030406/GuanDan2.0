@@ -311,7 +311,7 @@ def run_actor(key: str, buffer: ReplayBuffer, learner_http_url: Optional[str] = 
             # 写入 winlist 和 final_reward 到文件
             file.write(f"GameResult - 胜率：{winp}\n")
         #加载最近一次更新的模型权重
-        ckpt = torch.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/dqn_latest_model.pth",
+        ckpt = torch.load("/learner/checkpoints/dqn_latest_model_a1.pth",
                           map_location=device)
         agent.load_state_dict(ckpt["state_dict"])
         if winp > 0.9:
