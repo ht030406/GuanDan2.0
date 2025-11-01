@@ -295,6 +295,7 @@ async def main():
     #     "/home/tao/Competition/AI_GuanDan/训练平台/GdAITest_package/GuanDan/learner/checkpoints/ppo_latest_model_a1.pth",
     #     map_location='cpu')
     client = GDTestClient('ex_P-DW0Z6P-ES9P8H-6EM9BN-89RP1Q-EN-BP_2', model)
+    # client = GDTestClient('a2', model)
     # client = GDTestClient(args.key,model)
     await client.run()
 

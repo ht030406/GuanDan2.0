@@ -281,8 +281,8 @@ def run_actor(key: str, buffer: ReplayBuffer, learner_http_url: Optional[str] = 
     Instantiate agent and actor client, then run the asyncio loop.
     """
     agent = QStateActionFusion()
-    ckpt = torch.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/pre_model.pth", map_location=device)
-    agent.load_state_dict(ckpt["state_dict"])
+    ckpt = torch.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/dqn_step2000_model.pth", map_location=device)
+    agent.load_state_dict(ckpt)
     # agent = PPOAgent(state_dim=436, action_dim=1000, device=device)
     # agent.load_weights(
     #     "/home/tao/Competition/AI_GuanDan/训练平台/GdAITest_package/GuanDan/learner/checkpoints/ppo_step9980_model.pth",
@@ -311,9 +311,9 @@ def run_actor(key: str, buffer: ReplayBuffer, learner_http_url: Optional[str] = 
             # 写入 winlist 和 final_reward 到文件
             file.write(f"GameResult - 胜率：{winp}\n")
         #加载最近一次更新的模型权重
-        ckpt = torch.load("/learner/checkpoints/dqn_latest_model_a1.pth",
+        ckpt = torch.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/dqn_latest_model.pth",
                           map_location=device)
-        agent.load_state_dict(ckpt["state_dict"])
+        agent.load_state_dict(ckpt)
         if winp > 0.9:
             break
         time.sleep(0.5)

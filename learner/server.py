@@ -142,7 +142,7 @@ def start_learner_training(buffer: ReplayBuffer,
     # learner = PPOLearner(state_dim=state_dim, action_dim=action_dim, buffer=buffer, device=device,
     #                      save_every_updates=save_every)
     learner = DQNLearner(buffer=buffer)
-    learner.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/pre_model.pth")
+    learner.load("/home/tao/Competition/AI_GuanDan/GuanDan/learner/checkpoints/dqn_step2000.pth")
     # learner.load("/home/tao/Competition/AI_GuanDan/训练平台/GdAITest_package/GuanDan/learner/checkpoints/ppo_step9980.pth",)
     print("[Learner] Starting training loop")
     learner.train(total_updates=total_updates, fetch_interval=fetch_interval,
